@@ -2,6 +2,8 @@
 
 HackerNews clone built with Vue 2.0 + vue-router + vuex, with server-side rendering.
 
+东西很好, 但是在国内不支持, 修改了一下. 使用本地mock数据来生成接口. 支持SSR
+
 <p align="center">
   <a href="https://vue-hn.now.sh" target="_blank">
     <img src="https://cloud.githubusercontent.com/assets/499550/17546273/5aabc5fc-5eaf-11e6-8d6a-ad00937e8bd6.png" width="700px">
