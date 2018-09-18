@@ -10,6 +10,7 @@ export default {
   },
 
   SET_ITEMS: (state, { items }) => {
+    debugger;
     items.forEach(item => {
       if (item) {
         Vue.set(state.items, item.id, item)

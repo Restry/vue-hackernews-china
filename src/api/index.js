@@ -29,8 +29,8 @@ function fetch (child) {
     return Promise.resolve(cache.get(child))
   } else {
     return new Promise((resolve, reject) => {
-      api.child(child).once('value', snapshot => {
-        const val = snapshot.val()
+      api.child(child).then(snapshot => {
+        const val = snapshot.data
         // mark the timestamp when this item is cached
         if (val) val.__lastUpdated = Date.now()
         cache && cache.set(child, val)
@@ -59,18 +59,18 @@ export function fetchUser (id) {
   return fetch(`user/${id}`)
 }
 
-export function watchList (type, cb) {
-  let first = true
-  const ref = api.child(`${type}stories`)
-  const handler = snapshot => {
-    if (first) {
-      first = false
-    } else {
-      cb(snapshot.val())
-    }
-  }
-  ref.on('value', handler)
-  return () => {
-    ref.off('value', handler)
-  }
-}
+// export function watchList (type, cb) {
+//   let first = true
+//   const ref = api.child(`${type}stories`)
+//   const handler = snapshot => {
+//     if (first) {
+//       first = false
+//     } else {
+//       cb(snapshot.data)
+//     }
+//   }
+//   ref.on('value', handler)
+//   return () => {
+//     ref.off('value', handler)
+//   }
+// }

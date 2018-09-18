@@ -1,6 +1,6 @@
 <template>
   <li class="news-item">
-    <span class="score">{{ item.score }}</span>
+    <span class="score">{{ item.score+'-'+item.id }}</span>
     <span class="title">
       <template v-if="item.url">
         <a :href="item.url" target="_blank" rel="noopener">{{ item.title }}</a>

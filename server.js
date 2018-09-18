@@ -16,7 +16,31 @@ const serverInfo =
 
 const app = express()
 
-function createRenderer (bundle, options) {
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const Mock = require('mockjs');
+
+app.use(cookieParser('MAGICSTRING'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+  if ('OPTIONS' == req.method) {
+    res.send(204);
+  }
+  else {
+    next();
+  }
+});
+
+function createRenderer(bundle, options) {
   // https://github.com/vuejs/vue/blob/dev/packages/vue-server-renderer/README.md#why-use-bundlerenderer
   return createBundleRenderer(bundle, Object.assign(options, {
     // for component caching
@@ -78,7 +102,7 @@ app.use('/service-worker.js', serve('./dist/service-worker.js'))
 // https://www.nginx.com/blog/benefits-of-microcaching-nginx/
 app.use(microcache.cacheSeconds(1, req => useMicroCache && req.originalUrl))
 
-function render (req, res) {
+function render(req, res) {
   const s = Date.now()
 
   res.setHeader("Content-Type", "text/html")
@@ -87,7 +111,7 @@ function render (req, res) {
   const handleError = err => {
     if (err.url) {
       res.redirect(err.url)
-    } else if(err.code === 404) {
+    } else if (err.code === 404) {
       res.status(404).send('404 | Page Not Found')
     } else {
       // Render Error Page or Redirect
@@ -112,9 +136,58 @@ function render (req, res) {
   })
 }
 
-app.get('*', isProd ? render : (req, res) => {
+app.get('*', isProd ? render : (req, res, next) => {
+  if (req.url.startsWith('/api')) {
+    next();
+    return;
+  }
   readyPromise.then(() => render(req, res))
 })
+
+
+app.get('/api/item/*', (req, res) => {
+  const entity = Mock.mock({
+    "purplor|1-10": "★",
+    id: req.params[0],
+    body: '@cparagraph',
+    title: '@ctitle',
+    url: req.params.id > 2 ? 'http://www.baidu.com' : '',
+    by: '@cname',
+    time: new Date(),
+    descendants: 'descendants here',
+    type: 'top',
+    score: 100,
+    kids: [],//[1,2,4],
+  })
+  
+  res.status(200).json(entity);
+  // res.send('<h1>success</h1>' + '<a href="logout">logout</a>');
+
+});
+let randomArray = (length) => {
+  let i = 0
+  let index = 0
+  let temp = null
+  let arr = [length]
+  length = typeof (length) === 'undefined' ? 9 : length
+  for (i = 1; i <= length; i++) {
+    arr[i - 1] = i
+  }
+  for (i = 1; i <= length; i++) {
+    index = parseInt(Math.random() * (length - i)) + i
+    if (index != i) {
+      temp = arr[i - 1]
+      arr[i - 1] = arr[index - 1]
+      arr[index - 1] = temp
+    }
+  }
+  return arr
+}
+app.get('/api/:type', (req, res) => {
+  console.log('top:' + JSON.stringify(req.params));
+  res.status(200).json(randomArray(Math.random() * 100));
+})
+
 
 const port = process.env.PORT || 8080
 app.listen(port, () => {

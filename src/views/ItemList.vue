@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { watchList } from '../api'
+// import { watchList } from '../api'
 import Item from '../components/Item.vue'
 
 export default {
@@ -59,16 +59,16 @@ export default {
       this.loadItems(this.page)
     }
     // watch the current list for realtime updates
-    this.unwatchList = watchList(this.type, ids => {
-      this.$store.commit('SET_LIST', { type: this.type, ids })
-      this.$store.dispatch('ENSURE_ACTIVE_ITEMS').then(() => {
-        this.displayedItems = this.$store.getters.activeItems
-      })
-    })
+    // this.unwatchList = watchList(this.type, ids => {
+    //   this.$store.commit('SET_LIST', { type: this.type, ids })
+    //   this.$store.dispatch('ENSURE_ACTIVE_ITEMS').then(() => {
+    //     this.displayedItems = this.$store.getters.activeItems
+    //   })
+    // })
   },
 
   beforeDestroy () {
-    this.unwatchList()
+    // this.unwatchList()
   },
 
   watch: {
