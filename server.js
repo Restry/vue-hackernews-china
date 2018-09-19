@@ -144,19 +144,27 @@ app.get('*', isProd ? render : (req, res, next) => {
   readyPromise.then(() => render(req, res))
 })
 
+/**
+ * var url = 'https://newsapi.org/v2/everything?' +
+          'q=Apple&' +
+          'from=2018-09-19&' +
+          'sortBy=popularity&' +
+          'apiKey=c231663a04c94c96835da7ddbf7effeb';
 
+ */
 app.get('/api/item/*', (req, res) => {
   const entity = Mock.mock({
     "purplor|1-10": "★",
     id: req.params[0],
+    summary: '@cparagraph',
     body: '@cparagraph',
     title: '@ctitle',
     url: req.params.id > 2 ? 'http://www.baidu.com' : '',
     by: '@cname',
     time: new Date(),
-    descendants: 'descendants here',
+    descendants: '0',
     type: 'top',
-    score: 100,
+    score: 20,
     kids: [],//[1,2,4],
   })
   

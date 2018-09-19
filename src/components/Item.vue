@@ -11,6 +11,10 @@
       </template>
     </span>
     <br>
+    <span class="summary">
+      {{item.summary}}
+    </span>
+    <br>
     <span class="meta">
       <span v-if="item.type !== 'job'" class="by">
         by <router-link :to="'/user/' + item.by">{{ item.by }}</router-link>
@@ -22,7 +26,7 @@
         | <router-link :to="'/item/' + item.id">{{ item.descendants }} comments</router-link>
       </span>
     </span>
-    <span class="label" v-if="item.type !== 'story'">{{ item.type }}</span>
+    <!-- <span class="label" v-if="item.type !== 'story'">{{ item.type }}</span> -->
   </li>
 </template>
 
@@ -56,7 +60,7 @@ export default {
     width 80px
     text-align center
     margin-top -10px
-  .meta, .host
+  .meta, .host, .summary
     font-size .85em
     color #828282
     a
