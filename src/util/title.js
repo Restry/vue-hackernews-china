@@ -10,8 +10,8 @@ function getTitle (vm) {
 const serverTitleMixin = {
   created () {
     const title = getTitle(this)
-    if (title) {
-      this.$ssrContext.title = `Vue HN 2.0 | ${title}`
+    if (title) { 
+      this.$ssrContext.title += ` | ${title}`
     }
   }
 }
@@ -20,7 +20,7 @@ const clientTitleMixin = {
   mounted () {
     const title = getTitle(this)
     if (title) {
-      document.title = `Vue HN 2.0 | ${title}`
+      document.title += ` | ${title}`
     }
   }
 }

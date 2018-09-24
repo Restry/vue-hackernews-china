@@ -1,4 +1,4 @@
-import Firebase from 'firebase'
+// import Firebase from 'firebase'
 import instance from './instance'
 import LRU from 'lru-cache'
 
@@ -10,8 +10,9 @@ export function createAPI ({ config, version }) {
   if (process.__API__) {
     api = process.__API__
   } else {
-    Firebase.initializeApp(config)
-    api = process.__API__ = instance
+    // Firebase.initializeApp(config)
+    // debugger;
+    api = process.__API__ = instance(config.context)
 
     api.onServer = true
 
@@ -23,7 +24,8 @@ export function createAPI ({ config, version }) {
 
     // cache the latest story ids
     api.cachedIds = {}
-    ;['top', 'new', 'show', 'ask', 'job'].forEach(type => {
+  ;['top', /*'new', 'show', 'ask', 'job'*/].forEach(type => {
+      // debugger;
       api.child(`${type}stories`).then(snapshot => {
         api.cachedIds[type] = snapshot.data
       })

@@ -6,7 +6,7 @@ import getters from './getters'
 
 Vue.use(Vuex)
 
-export function createStore () {
+export function createStore (context) {
   return new Vuex.Store({
     state: {
       activeType: null,
@@ -21,7 +21,7 @@ export function createStore () {
         job: []
       }
     },
-    actions,
+    actions: actions(context),
     mutations,
     getters
   })

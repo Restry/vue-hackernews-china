@@ -5,5 +5,5 @@ import instance from './instance'
 export function createAPI ({ config, version }) {
   console.log('create api success - client');
   // Firebase.initializeApp(config)
-  return instance
+  return instance()
 }

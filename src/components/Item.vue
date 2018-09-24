@@ -1,6 +1,8 @@
 <template>
   <li class="news-item">
-    <span class="score">{{ item.score+'-'+item.id }}</span>
+    <span class="score">
+      <img v-show="item.urlToImage" :src="item.urlToImage" :title="item.title" />
+    </span>
     <span class="title">
       <template v-if="item.url">
         <a :href="item.url" target="_blank" rel="noopener">{{ item.title }}</a>
@@ -12,15 +14,15 @@
     </span>
     <br>
     <span class="summary">
-      {{item.summary}}
+      {{item.description}}
     </span>
     <br>
     <span class="meta">
       <span v-if="item.type !== 'job'" class="by">
-        by <router-link :to="'/user/' + item.by">{{ item.by }}</router-link>
+        by <router-link :to="'/user/' + item.author">{{ item.author }}</router-link>
       </span>
       <span class="time">
-        {{ item.time | timeAgo }} ago
+        {{ item.publishedAt | timeAgo }} ago
       </span>
       <span v-if="item.type !== 'job'" class="comments-link">
         | <router-link :to="'/item/' + item.id">{{ item.descendants }} comments</router-link>
@@ -46,7 +48,7 @@ export default {
 <style lang="stylus">
 .news-item
   background-color #fff
-  padding 20px 30px 20px 80px
+  padding 20px 30px 20px 180px
   border-bottom 1px solid #eee
   position relative
   line-height 20px
@@ -55,11 +57,13 @@ export default {
     font-size 1.1em
     font-weight 700
     position absolute
-    top 50%
+    top 15%
     left 0
-    width 80px
+    width 180px
     text-align center
     margin-top -10px
+    img
+      width 170px
   .meta, .host, .summary
     font-size .85em
     color #828282

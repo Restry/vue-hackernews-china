@@ -7,6 +7,8 @@ const compression = require('compression')
 const microcache = require('route-cache')
 const resolve = file => path.resolve(__dirname, file)
 const { createBundleRenderer } = require('vue-server-renderer')
+const { getCityEntityByHostName ,guid } = require('./server/tools')
+const router = require('./routes')
 
 const isProd = process.env.NODE_ENV === 'production'
 const useMicroCache = process.env.MICRO_CACHE !== 'false'
@@ -103,7 +105,9 @@ app.use('/service-worker.js', serve('./dist/service-worker.js'))
 app.use(microcache.cacheSeconds(1, req => useMicroCache && req.originalUrl))
 
 function render(req, res) {
-  const s = Date.now()
+  const s = Date.now();
+
+  const city = getCityEntityByHostName(req.hostname);
 
   res.setHeader("Content-Type", "text/html")
   res.setHeader("Server", serverInfo)
@@ -122,7 +126,8 @@ function render(req, res) {
   }
 
   const context = {
-    title: 'Vue HN 2.0', // default title
+    city,
+    title: city.label, // default title
     url: req.url
   }
   renderer.renderToString(context, (err, html) => {
@@ -136,64 +141,16 @@ function render(req, res) {
   })
 }
 
+
+app.use('/api', router);
+
+
 app.get('*', isProd ? render : (req, res, next) => {
   if (req.url.startsWith('/api')) {
     next();
     return;
   }
   readyPromise.then(() => render(req, res))
-})
-
-/**
- * var url = 'https://newsapi.org/v2/everything?' +
-          'q=Apple&' +
-          'from=2018-09-19&' +
-          'sortBy=popularity&' +
-          'apiKey=c231663a04c94c96835da7ddbf7effeb';
-
- */
-app.get('/api/item/*', (req, res) => {
-  const entity = Mock.mock({
-    "purplor|1-10": "★",
-    id: req.params[0],
-    summary: '@cparagraph',
-    body: '@cparagraph',
-    title: '@ctitle',
-    url: req.params.id > 2 ? 'http://www.baidu.com' : '',
-    by: '@cname',
-    time: new Date(),
-    descendants: '0',
-    type: 'top',
-    score: 20,
-    kids: [],//[1,2,4],
-  })
-  
-  res.status(200).json(entity);
-  // res.send('<h1>success</h1>' + '<a href="logout">logout</a>');
-
-});
-let randomArray = (length) => {
-  let i = 0
-  let index = 0
-  let temp = null
-  let arr = [length]
-  length = typeof (length) === 'undefined' ? 9 : length
-  for (i = 1; i <= length; i++) {
-    arr[i - 1] = i
-  }
-  for (i = 1; i <= length; i++) {
-    index = parseInt(Math.random() * (length - i)) + i
-    if (index != i) {
-      temp = arr[i - 1]
-      arr[i - 1] = arr[index - 1]
-      arr[index - 1] = temp
-    }
-  }
-  return arr
-}
-app.get('/api/:type', (req, res) => {
-  console.log('top:' + JSON.stringify(req.params));
-  res.status(200).json(randomArray(Math.random() * 100));
 })
 
 

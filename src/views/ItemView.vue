@@ -10,8 +10,8 @@
         </span>
         <p class="meta">
           {{ item.score }} points
-          | by <router-link :to="'/user/' + item.by">{{ item.by }}</router-link>
-          {{ item.time | timeAgo }} ago
+          | by <router-link :to="'/user/' + item.by">{{ item.author }}</router-link>
+          {{ item.publishedAt | timeAgo }} ago
         </p>
       </div>
       <div class="item-view-comments">

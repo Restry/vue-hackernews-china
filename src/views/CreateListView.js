@@ -9,7 +9,7 @@ export default function createListView (type) {
   return {
     name: `${type}-stories-view`,
 
-    asyncData ({ store }) {
+    asyncData ({ store,context }) {
       return store.dispatch('FETCH_LIST_DATA', { type })
     },
 
