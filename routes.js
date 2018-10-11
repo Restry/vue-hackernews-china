@@ -129,7 +129,7 @@ router.get('/:type', async (req, res) => {
     }
     const { data } = await axios.get('https://newsapi.org/v2/everything', { params })
     const { ops } = await dbAction.post(data.articles, cityIdentity, date);
-    debugger;
+    // debugger;
     // ids = insertedIds;
     ops.forEach(a => ids.push(a._id.toString()))
     if (data.totalResults > pageSize) {
@@ -145,7 +145,7 @@ router.get('/:type', async (req, res) => {
     const allIds = await dbAction.Ids(cityIdentity, date)
     ids = allIds.map(a => a._id)
   }
-  debugger;
+  // debugger;
   console.log('top:' + JSON.stringify(ids));
   res.status(200).json(ids);
 })

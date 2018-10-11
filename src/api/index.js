@@ -5,11 +5,19 @@ const logRequests = !!process.env.DEBUG_API
 
 export default context => {
 
+  let cacheCityKey = '';
+  if(context){
+    cacheCityKey = context.city.pinyin.toLowerCase();
+  }else{
+    cacheCityKey = location.hostname.split('.')[0].toLowerCase()
+  }
+
   const api = createAPI({
     version: '/v0',
     config: {
       databaseURL: 'https://hacker-news.firebaseio.com',
-      context
+      context,
+      cacheCityKey
     }
   })
 
@@ -20,7 +28,7 @@ export default context => {
   }
 
   function warmCache() {
-    fetchItems((api.cachedIds.top || []).slice(0, 30))
+    fetchItems(((api.cachedIds[cacheCityKey] && api.cachedIds[cacheCityKey]['top']) || []).slice(0, 30))
     setTimeout(warmCache, 1000 * 60 * 15)
   }
 
@@ -46,8 +54,9 @@ export default context => {
 
 
   function fetchIdsByType(type) {
-    return api.cachedIds && api.cachedIds[type]
-      ? Promise.resolve(api.cachedIds[type])
+    // debugger;
+    return api.cachedIds[cacheCityKey] && api.cachedIds[cacheCityKey][type]
+      ? Promise.resolve(api.cachedIds[cacheCityKey][type])
       : fetch(`${type}stories`)
   }
 

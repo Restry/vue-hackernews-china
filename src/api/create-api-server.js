@@ -2,13 +2,15 @@
 import instance from './instance'
 import LRU from 'lru-cache'
 
-export function createAPI ({ config, version }) {
+export function createAPI({ config, version }) {
   console.log('create api success - server');
   let api
   // this piece of code may run multiple times in development mode,
   // so we attach the instantiated API to `process` to avoid duplications
   if (process.__API__) {
-    api = process.__API__
+    api = process.__API__ 
+    console.log('api server:'+config.cacheCityKey,config.context)
+    Object.assign(api,instance(config.context))  //更新header接口
   } else {
     // Firebase.initializeApp(config)
     // debugger;
@@ -23,13 +25,19 @@ export function createAPI ({ config, version }) {
     })
 
     // cache the latest story ids
-    api.cachedIds = {}
-  ;['top', /*'new', 'show', 'ask', 'job'*/].forEach(type => {
+    api.cachedIds = {};
+  }
+  
+  if (!api.cachedIds[config.cacheCityKey])
+    ['top', /*'new', 'show', 'ask', 'job'*/].forEach(type => {
       // debugger;
       api.child(`${type}stories`).then(snapshot => {
-        api.cachedIds[type] = snapshot.data
+        const item = api.cachedIds[config.cacheCityKey] || {};
+        item[type] = snapshot.data
+        // debugger;
+        api.cachedIds[config.cacheCityKey] = item
       })
     })
-  }
+
   return api
 }

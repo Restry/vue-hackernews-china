@@ -14,11 +14,7 @@ export function createStore (context) {
       items: {/* [id: number]: Item */},
       users: {/* [id: string]: User */},
       lists: {
-        top: [/* number */],
-        new: [],
-        show: [],
-        ask: [],
-        job: []
+        
       }
     },
     actions: actions(context),
