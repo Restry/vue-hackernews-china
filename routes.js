@@ -124,7 +124,7 @@ router.get('/:type', async (req, res) => {
       sortBy: 'popularity',
       language: 'zh',
       apiKey: 'c231663a04c94c96835da7ddbf7effeb',
-      pageSize,
+      pageSize,// country
       page: 1
     }
     const { data } = await axios.get('https://newsapi.org/v2/everything', { params })
