@@ -30,8 +30,8 @@ export function createAPI({ config, version }) {
   
   if (!api.cachedIds[config.cacheCityKey])
     ['top', /*'new', 'show', 'ask', 'job'*/].forEach(type => {
-      // debugger;
-      api.child(`${type}stories`).then(snapshot => {
+      debugger;
+      api.child(`${config.cacheCityKey}-${type}-stories`).then(snapshot => {
         const item = api.cachedIds[config.cacheCityKey] || {};
         item[type] = snapshot.data
         // debugger;
