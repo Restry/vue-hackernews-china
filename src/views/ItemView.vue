@@ -8,20 +8,21 @@
         <span v-if="item.url" class="host">
           ({{ item.url | host }})
         </span>
-        <p class="meta">
-          {{ item.score }} points
+        <p class="meta"> 
           | by <router-link :to="'/user/' + item.by">{{ item.author }}</router-link>
-          {{ item.publishedAt | timeAgo }} ago
+          {{ item.publishedAt | timeAgo }}
         </p>
       </div>
       <div class="item-view-comments">
-        <p class="item-view-comments-header">
-          {{ item.kids ? item.descendants + ' comments' : 'No comments yet.' }}
-          <spinner :show="loading"></spinner>
+        
+         <p class="item-view-comments-header">
+           {{item.description}}
+          <!-- {{ item.kids ? item.descendants + ' comments' : 'No comments yet.' }} -->
+          <!-- <spinner :show="loading"></spinner> -->
         </p>
-        <ul v-if="!loading" class="comment-children">
+        <!--<ul v-if="!loading" class="comment-children">
           <comment v-for="id in item.kids" :key="id" :id="id"></comment>
-        </ul>
+        </ul> -->
       </div>
     </template>
   </div>

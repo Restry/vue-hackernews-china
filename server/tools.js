@@ -1,9 +1,11 @@
 const cities = require('../src/util/cities')
+var url = require('url');
 
+const getCityEntityByHostName = (hostname) => { 
+  var result = url.parse(hostname);
+  var host = result.hostname || hostname;
 
-const getCityEntityByHostName = (hostname) => {
-  const name = hostname.split('.')[0];
-
+  var name = host.split('.')[0]
   return getCityEntity(name);
 }
 

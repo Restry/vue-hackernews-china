@@ -4,11 +4,11 @@
       <img v-show="item.urlToImage" :src="item.urlToImage" :title="item.title" />
     </span>
     <span class="title">
-      <template v-if="item.url">
+      <!-- <template v-if="item.url">
         <a :href="item.url" target="_blank" rel="noopener">{{ item.title }}</a>
         <span class="host"> ({{ item.url | host }})</span>
-      </template>
-      <template v-else>
+      </template> -->
+      <template>
         <router-link :to="'/item/' + item.id">{{ item.title }}</router-link>
       </template>
     </span>

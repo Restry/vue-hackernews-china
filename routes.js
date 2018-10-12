@@ -109,9 +109,12 @@ router.get('/item/*', async (req, res) => {
 });
 
 router.get('/:type', async (req, res) => {
-  const cityHeader = req.get('x-custom-header')
-  const city = cityHeader ? getCityEntity(cityHeader) : getCityEntityByHostName(req.hostname); // TODO 适应客户端
+  const cityHeader = req.get('x-custom-header') || req.query.area;
+  console.log('cityHeader:' + cityHeader);
+
+  const city = getCityEntity(cityHeader); // TODO 适应客户端
   const cityIdentity = city.pinyin.toLowerCase()
+
   // 参数说明 https://newsapi.org/docs/endpoints/everything
   const date = dayjs().format('YYYY-MM-DD');
   const isExist = await dbAction.isExist(cityIdentity, date)
@@ -146,9 +149,13 @@ router.get('/:type', async (req, res) => {
     ids = allIds.map(a => a._id)
   }
   // debugger;
-  console.log('top:' + JSON.stringify(ids));
+  // console.log('top:' + JSON.stringify(ids));
   res.status(200).json(ids);
 })
 
+router.get('/content/:url', async () => {
+
+  'http://url2api.applinzi.com/article?token=ZGy5_mzaT_Wy2EzRFBz4xA&url='
+})
 
 module.exports = router;

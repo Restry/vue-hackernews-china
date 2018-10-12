@@ -1,11 +1,11 @@
 <template>
   <div class="news-view">
     <div class="news-list-nav">
-      <router-link v-if="page > 1" :to="'/' + type + '/' + (page - 1)">&lt; prev</router-link>
-      <a v-else class="disabled">&lt; prev</a>
+      <router-link v-if="page > 1" :to="'/' + type + '/' + (page - 1)">&lt; 上一页</router-link>
+      <a v-else class="disabled">&lt; 上一页</a>
       <span>{{ page }}/{{ maxPage }}</span>
-      <router-link v-if="hasMore" :to="'/' + type + '/' + (page + 1)">more &gt;</router-link>
-      <a v-else class="disabled">more &gt;</a>
+      <router-link v-if="hasMore" :to="'/' + type + '/' + (page + 1)">下一页 &gt;</router-link>
+      <a v-else class="disabled">下一页 &gt;</a>
     </div>
     <transition :name="transition">
       <div class="news-list" :key="displayedPage" v-if="displayedPage > 0">
