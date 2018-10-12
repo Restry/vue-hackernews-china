@@ -6,7 +6,7 @@ const getConfig = () => {
 
   const config = {
     prod: {
-      url: 'http://127.0.0.1:'+port+'/api',
+      url: 'http://api.syyrx.com/api',
     },
 
     dev: {
