@@ -28,16 +28,17 @@ export function createAPI({ config, version }) {
     api.cachedIds = {};
   }
   
-  if (!api.cachedIds[config.cacheCityKey])
-    ['top', /*'new', 'show', 'ask', 'job'*/].forEach(type => {
-      debugger;
-      api.child(`${config.cacheCityKey}-${type}-stories`).then(snapshot => {
-        const item = api.cachedIds[config.cacheCityKey] || {};
-        item[type] = snapshot.data
-        // debugger;
-        api.cachedIds[config.cacheCityKey] = item
-      })
-    })
+  // if (!api.cachedIds[config.cacheCityKey])
+  //   ['top', /*'new', 'show', 'ask', 'job'*/].forEach(type => {
+  //     debugger;
+  //     console.log('api-server');
+  //     api.get(`${type}-stories`).then(snapshot => {
+  //       const item = api.cachedIds[config.cacheCityKey] || {};
+  //       item[type] = snapshot.data
+  //       // debugger;
+  //       api.cachedIds[config.cacheCityKey] = item
+  //     })
+  //   })
 
   return api
 }

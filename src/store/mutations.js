@@ -13,7 +13,7 @@ export default {
     // debugger;
     items.forEach(item => {
       if (item) {
-        Vue.set(state.items, item.id, item)
+        Vue.set(state.items, item._id, item)
       }
     })
   },

@@ -1,10 +1,10 @@
 import api from '../api'
 
 export default context => {
-  const {fetchUser,fetchItems,fetchIdsByType} = api(context)
+  const { fetchUser, fetchItems, fetchIdsByType } = api(context)
   return {
     // ensure data for rendering given list type
-    FETCH_LIST_DATA: ({ commit, dispatch, state }, { type }) => {
+    FETCH_LIST_DATA: ({ commit, dispatch, state }, { type,to }) => {
       commit('SET_ACTIVE_TYPE', { type })
       return fetchIdsByType(type)
         .then(ids => commit('SET_LIST', { type, ids }))
@@ -33,7 +33,7 @@ export default context => {
         return false
       })
       if (ids.length) {
-        return fetchItems(ids).then(items => commit('SET_ITEMS', { items }))
+        return fetchItems(ids).then(items => commit('SET_ITEMS', { items: items.data }))
       } else {
         return Promise.resolve()
       }

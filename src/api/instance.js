@@ -30,10 +30,5 @@ export default (context) => {
     }
   });
 
-  return {
-    child(url) {
-      return instance.get(url)
-    },
-    instance
-  }
+  return instance
 } 

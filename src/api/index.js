@@ -15,22 +15,22 @@ export default context => {
   const api = createAPI({
     version: '/v0',
     config: {
-      databaseURL: 'https://hacker-news.firebaseio.com',
+      databaseURL: '',
       context,
       cacheCityKey
     }
   })
 
-  // warm the front page cache every 15 min
-  // make sure to do this only once across all requests
-  if (api.onServer) {
-    warmCache()
-  }
+  // // warm the front page cache every 15 min
+  // // make sure to do this only once across all requests
+  // if (api.onServer) {
+  //   warmCache()
+  // }
 
-  function warmCache() {
-    fetchItems(((api.cachedIds[cacheCityKey] && api.cachedIds[cacheCityKey]['top']) || []).slice(0, 30))
-    setTimeout(warmCache, 1000 * 60 * 15)
-  }
+  // function warmCache() {
+  //   fetchItems(((api.cachedIds[cacheCityKey] && api.cachedIds[cacheCityKey]['top']) || []).slice(0, 30))
+  //   setTimeout(warmCache, 1000 * 60 * 15)
+  // }
 
   function fetch(child) {
     logRequests && console.log(`fetching ${child}...`)
@@ -40,7 +40,7 @@ export default context => {
       return Promise.resolve(cache.get(child))
     } else {
       return new Promise((resolve, reject) => {
-        api.child(child).then(snapshot => {
+        api.get(child).then(snapshot => {
           const val = snapshot.data
           // mark the timestamp when this item is cached
           if (val) val.__lastUpdated = Date.now()
@@ -65,7 +65,9 @@ export default context => {
   }
 
   function fetchItems(ids) {
-    return Promise.all(ids.map(id => fetchItem(id)))
+    console.log('fetchItems');
+    return api.get(`/items/${cacheCityKey}`)
+ //   return Promise.all(ids.map(id => fetchItem(id)))
   }
 
   function fetchUser(id) {
@@ -81,7 +83,7 @@ export default context => {
 
 // export function watchList (type, cb) {
 //   let first = true
-//   const ref = api.child(`${type}stories`)
+//   const ref = api.get(`${type}stories`)
 //   const handler = snapshot => {
 //     if (first) {
 //       first = false

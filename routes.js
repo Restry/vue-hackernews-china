@@ -17,13 +17,17 @@ const removeProcessor = (data) => {
   return avliableKeys;
 }
 
+const errorHandler = (res) => {
+  console.log(res);
+}
 
 const dbAction = {
   Ids: (city, date) => {
     return new Promise((resolve, reject) => {
       db.open(dataBase).then(dbo => {
+
         return dbo.collection('posts').find({ city, date }).project({ '_id': 1 }).toArray()
-      }).then(resolve).catch(reject).finally(() => {
+      }).then(resolve).catch(errorHandler).finally(() => {
         db.close()
       })
     })
@@ -45,7 +49,7 @@ const dbAction = {
         }
 
         return r[method](rows);
-      }).then(resolve).catch(reject).finally(() => {
+      }).then(resolve).catch(errorHandler).finally(() => {
         db.close();
       })
 
@@ -76,7 +80,7 @@ const dbAction = {
         }
 
         return execute.sort({ "time": -1 }).toArray();
-      }).then(resolve).catch(reject).finally(() => {
+      }).then(resolve).catch(errorHandler).finally(() => {
         db.close()
       })
     })
@@ -85,7 +89,7 @@ const dbAction = {
     return new Promise((resolve, reject) => {
       db.open(dataBase).then(dbo => {
         return dbo.collection('posts').find({ city, date }).limit(1).toArray()
-      }).then(resolve).catch(reject).finally(() => {
+      }).then(resolve).catch(errorHandler).finally(() => {
         db.close()
       })
     })
@@ -108,6 +112,18 @@ router.get('/item/*', async (req, res) => {
 
 });
 
+router.get('/items/:city', async (req, res) => {
+  const date = dayjs().format('YYYY-MM-DD');
+  const allItems = await dbAction.get({ city: req.params.city, 
+    date, 
+    // '$limit': 20 
+  })
+
+  res.json(allItems);
+})
+
+
+
 router.get('/:type', async (req, res) => {
   const cityHeader = req.get('x-custom-header') || req.query.area;
   console.log('cityHeader:' + cityHeader);
@@ -120,7 +136,7 @@ router.get('/:type', async (req, res) => {
   const isExist = await dbAction.isExist(cityIdentity, date)
   let ids = [];
   if (!isExist.length) {
-    const pageSize = 100;
+    const pageSize = 50;
     const params = {
       q: city.name,
       from: date,
@@ -130,6 +146,7 @@ router.get('/:type', async (req, res) => {
       pageSize,// country
       page: 1
     }
+    console.log(params);
     const { data } = await axios.get('https://newsapi.org/v2/everything', { params })
     const { ops } = await dbAction.post(data.articles, cityIdentity, date);
     // debugger;
@@ -154,7 +171,6 @@ router.get('/:type', async (req, res) => {
 })
 
 router.get('/content/:url', async () => {
-
   'http://url2api.applinzi.com/article?token=ZGy5_mzaT_Wy2EzRFBz4xA&url='
 })
 

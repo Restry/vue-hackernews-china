@@ -7,8 +7,8 @@ export function createAPI({ config, version }) {
   // Firebase.initializeApp(config)
   const api = instance()
   api.cachedIds = {}; 
-  api.instance.defaults.params = {};
-  api.instance.defaults.params[ 'area' ] = config.cacheCityKey;
+  api.defaults.params = {};
+  api.defaults.params[ 'area' ] = config.cacheCityKey;
  
   return api;
 }

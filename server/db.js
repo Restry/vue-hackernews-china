@@ -10,7 +10,7 @@ function open(database) {
   var url = dbUrl;
   return new Promise((resolve, reject) => {
     // Use connect method to connect to the Server
-    mongoClient.connect(url, (err, db) => {
+    mongoClient.connect(url, { useNewUrlParser: true }, (err, db) => {
       if (err) {
         reject(err);
       } else {

@@ -1,4 +1,4 @@
 module.exports = {
-  dbUrl: 'mongodb://admin:Mongohere1@qiyepai.net.cn:28888/',
-  dataBase:'forum3'
+  dbUrl: 'mongodb://admin:Mongohere1@150.242.250.66:28888/',
+  dataBase:'news'
 }
