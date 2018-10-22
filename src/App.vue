@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <!-- <header class="header">
+    <header class="header">
       <nav class="inner">
         <router-link to="/" exact>
           <img class="logo" src="~public/logo-48.png" alt="logo">
         </router-link>
-        <router-link to="/top">新闻</router-link> -->
+        <router-link to="/top">新闻</router-link>
         <!-- <router-link to="/new">热点</router-link>
         <router-link to="/show">最新</router-link>  -->
-        <!-- <a class="github" href="" target="_blank" rel="noopener">
+        <a class="github" href="" target="_blank" rel="noopener">
           内容资讯网站
         </a>
       </nav>
-    </header> -->
+    </header>
     <transition name="fade" mode="out-in">
       <router-view class="view"></router-view>
     </transition>

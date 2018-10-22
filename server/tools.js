@@ -10,6 +10,7 @@ const getCityEntityByHostName = (hostname) => {
 }
 
 const getCityEntity = (name) => { 
+  debugger
   const city = cities.find(a => a.pinyin.toLowerCase() == name.toLowerCase());
   return city;
 }

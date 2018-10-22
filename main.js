@@ -106,7 +106,6 @@ app.use(microcache.cacheSeconds(1, req => useMicroCache && req.originalUrl))
 
 function render(req, res) {
   const s = Date.now();
-
   const city = getCityEntityByHostName(req.hostname);
 
   res.setHeader("Content-Type", "text/html")

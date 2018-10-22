@@ -1,9 +1,9 @@
 <template>
 <div class="wrap">
     <!-- 主频道导航 -->
-    <div class="main-nav">
+    <!-- <div class="main-nav">
         <main-nav></main-nav>
-    </div>
+    </div> -->
     <div class="main-contain">
       <div class="left">
         <news-kit title="新闻标题" type="新闻类型"></news-kit>
@@ -20,6 +20,7 @@
 import mainNav from "../components/mainNav.vue";
 import newsKit from "../components/newsKit.vue";
 import newsTop from "../components/newsTop.vue";
+//import routes from "../../routes"
 
 export default {
   name: "index",
@@ -37,7 +38,10 @@ export default {
     return {
       //displayedItems: this.$store.getters.activeItems
     }
-  }
+  },
+  beforeMount () {
+    
+  },
 };
 </script>
 <<style lang="stylus">

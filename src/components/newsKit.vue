@@ -15,20 +15,21 @@
 </template>
 
 <script>
-import api from '../api'
 export default {
   name: "news-kit",
   props: ["title", "type"],
 
   data() {
-      debugger
     // 缺少每个类型下新闻的接口
     return {
-      newsItems:this.$store.getters.activeItems
-    }
+      newsItems: []//this.$store.getters.activeItems
+    };
   },
+  beforeMount() {
+      this.newsItems=this.$store.getters.activeItems;
+      
 
-
+  }
 };
 </script>
 <style lang="stylus">
