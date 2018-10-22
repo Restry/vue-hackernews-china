@@ -5,9 +5,10 @@ Vue.use(Router)
 
 // route-level code splitting
 const createListView = id => () => import('../views/CreateListView').then(m => m.default(id))
+const indexData = id => () => import('../views/indexData').then(d => d.default(id))
 const ItemView = () => import('../views/ItemView.vue')
 const UserView = () => import('../views/UserView.vue')
-const IndexView = () => import('../views/index.vue')
+//const IndexView = () => import('../views/index.vue')
 
 
 export function createRouter() {
@@ -24,7 +25,7 @@ export function createRouter() {
       { path: '/item/:id', component: ItemView },
       { path: '/user/:id', component: UserView },
       { path: '/', redirect: '/top' },
-      { path: '/index', component: IndexView }
+      { path: '/index', component: indexData('index')}
     ]
   })
 }

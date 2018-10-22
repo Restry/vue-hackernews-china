@@ -7,14 +7,15 @@
             </a>
         </div>
         <div class="items-kit">
-            <!-- <div class="news-item" :v-for="item in newsItems">
+            <div class="news-item" v-for="item in newsItems" :key="item._id">
                 <div class="title">{{item.title}}</div>
-            </div> -->
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import api from '../api'
 export default {
   name: "news-kit",
   props: ["title", "type"],
@@ -23,7 +24,7 @@ export default {
       debugger
     // 缺少每个类型下新闻的接口
     return {
-      //newsItems:this.$store.getters.activeItems
+      newsItems:this.$store.getters.activeItems
     }
   },
 
