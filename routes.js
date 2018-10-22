@@ -139,8 +139,9 @@ router.get('/:type', async (req, res) => {
     const pageSize = 50;
     const params = {
       q: city.name,
-      from: date,
-      sortBy: 'popularity',
+      from: date, // 开始时间 ,默认当天
+      // to: date, 结束时间
+      sortBy: 'popularity',  //popularity热度最高的 relevancy和关键字最相似的  publishedAt和发布时间最靠近的
       language: 'zh',
       apiKey: 'c231663a04c94c96835da7ddbf7effeb',
       pageSize,// country
