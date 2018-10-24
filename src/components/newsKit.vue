@@ -17,18 +17,31 @@
 <script>
 export default {
   name: "news-kit",
-  props: ["title", "type"],
+  props: ["title", "pinyin"],
 
   data() {
     // 缺少每个类型下新闻的接口
     return {
-      newsItems: []//this.$store.getters.activeItems
+      newsItems: [] //this.$store.getters.activeItems
     };
   },
+  created() {
+    // this.$store
+    //   .dispatch("getCityData", {
+    //     city: "shanghai"
+    //   })
+    //   .then(() => {
+    //     this.newsItems = this.$store.getters.activeItems;
+    //   });
+  },
   beforeMount() {
-      this.newsItems=this.$store.getters.activeItems;
-      
-
+    this.$store
+      .dispatch("getCityData", {
+        city: this.pinyin
+      })
+      .then(() => {
+        this.newsItems = this.$store.state.cityData;
+      });
   }
 };
 </script>

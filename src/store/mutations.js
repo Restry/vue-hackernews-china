@@ -20,5 +20,17 @@ export default {
 
   SET_USER: (state, { id, user }) => {
     Vue.set(state.users, id, user || false) /* false means user not found */
-  }
+  },
+
+  //填充数据
+  SET_CITY_DATA: (state, { items }) => {
+    state.cityData=[];
+    //debugger;
+    items.forEach(item => {
+      if (item) {
+        state.cityData.push(item);
+        //Vue.set(state.cityData, item._id, item)
+      }
+    })
+  },
 }

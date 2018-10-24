@@ -1,10 +1,10 @@
 import api from '../api'
 
 export default context => {
-  const { fetchUser, fetchItems, fetchIdsByType } = api(context)
+  const { fetchUser, fetchItems, fetchIdsByType, fetchCityData } = api(context)
   return {
     // ensure data for rendering given list type
-    FETCH_LIST_DATA: ({ commit, dispatch, state }, { type,to }) => {
+    FETCH_LIST_DATA: ({ commit, dispatch, state }, { type, to }) => {
       commit('SET_ACTIVE_TYPE', { type })
       return fetchIdsByType(type)
         .then(ids => commit('SET_LIST', { type, ids }))
@@ -43,6 +43,9 @@ export default context => {
       return state.users[id]
         ? Promise.resolve(state.users[id])
         : fetchUser(id).then(user => commit('SET_USER', { id, user }))
+    },
+    getCityData: ({ commit, dispatch, state }, { city }) => {
+      return fetchCityData(city).then(items => commit('SET_CITY_DATA', { items: items.data }));
     }
   }
 }

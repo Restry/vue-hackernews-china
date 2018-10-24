@@ -6,9 +6,11 @@
     </div> -->
     <div class="main-contain">
       <div class="left">
-        <news-kit title="新闻标题" type="新闻类型"></news-kit>
-        <news-kit title="新闻标题1" type="新闻类型"></news-kit>
-        <news-kit title="新闻标题2" type="新闻类型"></news-kit>
+        <news-kit title="北京" pinyin="beijing"></news-kit>
+        <news-kit title="上海" pinyin="shanghai"></news-kit>
+        <!-- <news-kit title="广州" pinyin="guangzhou"></news-kit> -->
+        <!-- <news-kit title="新闻标题1" type="新闻类型"></news-kit>
+        <news-kit title="新闻标题2" type="新闻类型"></news-kit> -->
       </div>
       <div class="right">
         <news-top></news-top>
@@ -29,19 +31,18 @@ export default {
     newsKit,
     newsTop
   },
-  props:{
-    title:String,
-    type:String
+  props: {
+    title: String,
+    pinyin: String
   },
-  data(){
+  data() {
     //debugger
     return {
       //displayedItems: this.$store.getters.activeItems
-    }
+    };
   },
-  beforeMount () {
-    
-  },
+  
+  beforeMount() {}
 };
 </script>
 <<style lang="stylus">

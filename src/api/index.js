@@ -74,8 +74,12 @@ export default context => {
     return fetch(`user/${id}`)
   }
 
+  function fetchCityData(city){
+    return api.get(`/items/${city}`)
+  }
+
   return {
-    fetchIdsByType, fetchItem, fetchItems, fetchUser
+    fetchIdsByType, fetchItem, fetchItems, fetchUser,fetchCityData
   }
 };
 
