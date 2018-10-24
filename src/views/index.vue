@@ -8,9 +8,8 @@
       <div class="left">
         <news-kit title="北京" pinyin="beijing"></news-kit>
         <news-kit title="上海" pinyin="shanghai"></news-kit>
-        <!-- <news-kit title="广州" pinyin="guangzhou"></news-kit> -->
-        <!-- <news-kit title="新闻标题1" type="新闻类型"></news-kit>
-        <news-kit title="新闻标题2" type="新闻类型"></news-kit> -->
+        <news-kit title="上海" pinyin="shanghai"></news-kit>
+        <news-kit title="上海" pinyin="shanghai"></news-kit>
       </div>
       <div class="right">
         <news-top></news-top>
@@ -58,7 +57,11 @@ export default {
   flex 1
   padding-right 9px
   border-right 1px solid rgb(230,230,230)
-  
+  display flex
+  flex-wrap: wrap;
+.main-contain .left .news-kit
+  width 50%
+
 .main-contain .right
   width 200px
   padding-left 9px

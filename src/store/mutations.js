@@ -24,10 +24,10 @@ export default {
 
   //填充数据
   SET_CITY_DATA: (state, { items }) => {
-    state.cityData=[];
+    state.cityData = [];
     //debugger;
-    items.forEach(item => {
-      if (item) {
+    items.forEach((item, i) => {
+      if (item && i < 15) {
         state.cityData.push(item);
         //Vue.set(state.cityData, item._id, item)
       }
