@@ -89,7 +89,7 @@ const dbAction = {
           sort[data.$sortdesc] = -1;
           execute = execute.sort(sort)
         }
-    
+
         return execute.toArray();
         // return execute.sort({ "time": -1 }).toArray();
       }).then(resolve).catch(errorHandler).finally(() => {
@@ -126,15 +126,50 @@ router.get('/item/*', async (req, res) => {
 
 router.get('/items/:city', async (req, res) => {
   const date = dayjs().format('YYYY-MM-DD');
-  const allItems = await dbAction.get({ city: req.params.city, 
-    date, 
-    // '$limit': 20 
+  const allItems = await dbAction.get({
+    city: req.params.city,
+    date,
+    '$limit': req.query['$limit']
   })
+
+  if (allItems.length == 0) {
+    fetchItems(req.params.city, date)
+  }
 
   res.json(allItems);
 })
 
-
+const fetchItems = async (cityIdentity, from) => {
+  const pageSize = 50;
+  const city = getCityEntity(cityIdentity); // TODO 适应客户端
+  const params = {
+    q: city.name,
+    from, // 开始时间 ,默认当天
+    // to: date, 结束时间
+    sortBy: 'popularity',  //popularity热度最高的 relevancy和关键字最相似的  publishedAt和发布时间最靠近的
+    language: 'zh',
+    apiKey: 'c231663a04c94c96835da7ddbf7effeb',
+    pageSize,// country
+    page: 1
+  } 
+  console.log('params:',params);
+  const { data } = await axios.get('https://newsapi.org/v2/everything', { params })
+  console.log('crawl data:',data.totalResults);
+  const { ops } = await dbAction.post(data.articles, cityIdentity, from);
+  // debugger;
+  const ids = [];
+  ops.forEach(a => ids.push(a._id.toString()))
+  if (data.totalResults > pageSize) {
+    const totalPages = Math.ceil(data.totalResults / pageSize);
+    for (let index = 2; index <= totalPages; index++) {
+      params.page = index;
+      const news = await axios.get('https://newsapi.org/v2/everything', { params })
+      const inserted = await dbAction.post(news.data.articles, cityIdentity, from);
+      inserted.ops.forEach(a => ids.push(a._id.toString()))
+    }
+  }
+  return ids;
+}
 
 router.get('/:type', async (req, res) => {
   const cityHeader = req.get('x-custom-header') || req.query.area;
@@ -148,32 +183,7 @@ router.get('/:type', async (req, res) => {
   const isExist = await dbAction.isExist(cityIdentity, date)
   let ids = [];
   if (!isExist.length) {
-    const pageSize = 50;
-    const params = {
-      q: city.name,
-      from: date, // 开始时间 ,默认当天
-      // to: date, 结束时间
-      sortBy: 'popularity',  //popularity热度最高的 relevancy和关键字最相似的  publishedAt和发布时间最靠近的
-      language: 'zh',
-      apiKey: 'c231663a04c94c96835da7ddbf7effeb',
-      pageSize,// country
-      page: 1
-    }
-    console.log(params);
-    const { data } = await axios.get('https://newsapi.org/v2/everything', { params })
-    const { ops } = await dbAction.post(data.articles, cityIdentity, date);
-    // debugger;
-    // ids = insertedIds;
-    ops.forEach(a => ids.push(a._id.toString()))
-    if (data.totalResults > pageSize) {
-      const totalPages = Math.ceil(data.totalResults / pageSize);
-      for (let index = 2; index <= totalPages; index++) {
-        params.page = index;
-        const news = await axios.get('https://newsapi.org/v2/everything', { params })
-        const inserted = await dbAction.post(news.data.articles, cityIdentity, date);
-        inserted.ops.forEach(a => ids.push(a._id.toString()))
-      }
-    }
+    ids = fetchItems(cityIdentity, date);
   } else {
     const allIds = await dbAction.Ids(cityIdentity, date)
     ids = allIds.map(a => a._id)

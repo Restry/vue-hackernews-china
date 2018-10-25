@@ -6,9 +6,9 @@ const logRequests = !!process.env.DEBUG_API
 export default context => {
 
   let cacheCityKey = '';
-  if(context){
+  if (context) {
     cacheCityKey = context.city.pinyin.toLowerCase();
-  }else{
+  } else {
     cacheCityKey = location.hostname.split('.')[0].toLowerCase()
   }
 
@@ -67,19 +67,19 @@ export default context => {
   function fetchItems(ids) {
     console.log('fetchItems');
     return api.get(`/items/${cacheCityKey}`)
- //   return Promise.all(ids.map(id => fetchItem(id)))
+    //   return Promise.all(ids.map(id => fetchItem(id)))
   }
 
   function fetchUser(id) {
     return fetch(`user/${id}`)
   }
 
-  function fetchCityData(city){
-    return api.get(`/items/${city}`)
+  function fetchCityData(city, limit) {
+    return api.get(`/items/${city}?$limit=${limit}`)
   }
 
   return {
-    fetchIdsByType, fetchItem, fetchItems, fetchUser,fetchCityData
+    fetchIdsByType, fetchItem, fetchItems, fetchUser, fetchCityData
   }
 };
 
