@@ -7,11 +7,20 @@
       </a>
     </div>
     <div class="items-kit">
-      <div class="news-item" v-for="item in newsItems" :key="item._id">
-        <div class="title">
-          <a :href="getHostName()+'/item/'+item._id">
-            {{item.title}}
-          </a>
+      <div v-if="hasData===true">
+        <div class="news-item" v-for="item in newsItems" :key="item._id">
+          <div class="title">
+            <a :href="getHostName()+'/item/'+item._id">
+              {{item.title}}
+            </a>
+          </div>
+        </div>
+      </div>
+      <div v-else>
+        <div class="news-item">
+          <div class="title">
+            数据加载中...
+          </div>
         </div>
       </div>
     </div>
@@ -26,6 +35,7 @@ export default {
   data() {
     // 缺少每个类型下新闻的接口
     return {
+      hasData: false,
       newsItems: [] //this.$store.getters.activeItems
     };
   },
@@ -50,6 +60,9 @@ export default {
       })
       .then(() => {
         this.newsItems = this.$store.state.cityData;
+        if (this.newsItems.length > 0) {
+          this.hasData = true;
+        }
         // TODO 后台返回为空时会自动抓数据 , 到这个组件中提示 "数据正在获取中" .  下一次刷新数据可能就过来了
       });
   }
@@ -60,7 +73,7 @@ export default {
   height: 48px;
   border: 1px solid rgb(229, 229, 229);
   border-top: 2px solid rgb(92, 92, 92);
-  background-color: rgb(251, 251, 251);
+  background-color: rgb(238, 111, 45);
 }
 
 .title-kit a {
