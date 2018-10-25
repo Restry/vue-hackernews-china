@@ -41,7 +41,10 @@ export default {
     };
   },
   
-  beforeMount() {}
+  beforeMount() {
+    debugger;
+    // TODO 根据location来判断如果 是www 的直接跳转到 /top页面
+  }
 };
 </script>
 <<style lang="stylus">

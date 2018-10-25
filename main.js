@@ -7,7 +7,7 @@ const compression = require('compression')
 const microcache = require('route-cache')
 const resolve = file => path.resolve(__dirname, file)
 const { createBundleRenderer } = require('vue-server-renderer')
-const { getCityEntityByHostName ,guid } = require('./server/tools')
+const { getCityEntityByHostName, guid } = require('./server/tools')
 const router = require('./routes')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -107,7 +107,7 @@ app.use(microcache.cacheSeconds(1, req => useMicroCache && req.originalUrl))
 function render(req, res) {
   const s = Date.now();
   const city = getCityEntityByHostName(req.hostname);
-
+  console.log('main.js > city , hostname:', city, req.hostname)
   res.setHeader("Content-Type", "text/html")
   res.setHeader("Server", serverInfo)
 
@@ -126,7 +126,7 @@ function render(req, res) {
 
   const context = {
     city,
-    title: city.label, // default title
+    title: city ? city.label : '新闻系统', // default title
     url: req.url
   }
   renderer.renderToString(context, (err, html) => {
