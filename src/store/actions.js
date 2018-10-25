@@ -45,7 +45,7 @@ export default context => {
         : fetchUser(id).then(user => commit('SET_USER', { id, user }))
     },
     getCityData: ({ commit, dispatch, state }, { city }) => {
-      return fetchCityData(city).then(items => commit('SET_CITY_DATA', { items: items.data }));
+      return fetchCityData(city, 20).then(items => commit('SET_CITY_DATA', { items: items.data }));
     }
   }
 }

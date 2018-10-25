@@ -1,21 +1,18 @@
 <template>
-<div class="wrap">
+  <div class="wrap">
     <!-- 主频道导航 -->
     <!-- <div class="main-nav">
         <main-nav></main-nav>
     </div> -->
     <div class="main-contain">
       <div class="left">
-        <news-kit title="北京" pinyin="beijing"></news-kit>
-        <news-kit title="上海" pinyin="shanghai"></news-kit>
-        <news-kit title="上海" pinyin="shanghai"></news-kit>
-        <news-kit title="上海" pinyin="shanghai"></news-kit>
+        <news-kit v-for="item in cities" :key="item.value" :title="item.title" :pinyin="item.value"></news-kit>
       </div>
       <div class="right">
         <news-top></news-top>
       </div>
     </div>
-</div>    
+  </div>
 </template>
 <script>
 import mainNav from "../components/mainNav.vue";
@@ -37,13 +34,21 @@ export default {
   data() {
     //debugger
     return {
+      cities: [
+        { title: "北京", value: "beijing" },
+        { title: "上海", value: "shanghai" },
+        { title: "广州", value: "guangzhou" },
+        { title: "武汉", value: "wuhan" }
+      ]
       //displayedItems: this.$store.getters.activeItems
     };
   },
-  
+
   beforeMount() {
-    debugger;
-    // TODO 根据location来判断如果 是www 的直接跳转到 /top页面
+    // 根据location来判断如果 是www 的直接跳转到 /top页面
+    if (!location.hostname.startsWith("www")) {
+      this.$router.push("/top");
+    }
   }
 };
 </script>
