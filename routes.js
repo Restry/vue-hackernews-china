@@ -79,7 +79,19 @@ const dbAction = {
           execute = execute.skip(parseInt(data.$skip))
         }
 
-        return execute.sort({ "time": -1 }).toArray();
+        if (data.$sort) {
+          const sort = {}
+          sort[data.$sort] = 1;
+          execute = execute.sort(sort)
+        }
+        if (data.$sortdesc) {
+          const sort = {}
+          sort[data.$sortdesc] = -1;
+          execute = execute.sort(sort)
+        }
+    
+        return execute.toArray();
+        // return execute.sort({ "time": -1 }).toArray();
       }).then(resolve).catch(errorHandler).finally(() => {
         db.close()
       })
