@@ -4,14 +4,19 @@
         <span>新闻Top榜</span> 
         <i></i>
     </div>
-    <div class="items-top">
+    <div class="items-top" v-if="hasData===true">
         <div class="item-top" v-for="item in newsItems" :key="item._id">
         <div class="title">
-          <a :href="getHostName()+'/item/'+item._id">
+          <a target="_blabk" :href="getHostName()+'/item/'+item._id" v-bind:title="item.title">
             {{item.title}}
           </a>
         </div>
       </div>
+    </div>
+    <div class="items-top" v-else>
+         <div class="title">
+            数据加载中...
+          </div>
     </div>
 </div>
     
@@ -23,7 +28,8 @@ export default {
   data() {
     // 缺少每个类型下新闻的接口
     return {
-      top: "anhui",
+      top: "beijing",
+      hasData: false,
       newsItems: [] //this.$store.getters.activeItems
     };
   },
@@ -48,6 +54,9 @@ export default {
       })
       .then(() => {
         this.newsItems = this.$store.state.cityData;
+        if (this.newsItems.length > 0) {
+          this.hasData = true;
+        }
         // TODO 后台返回为空时会自动抓数据 , 到这个组件中提示 "数据正在获取中" .  下一次刷新数据可能就过来了
       });
   }
@@ -80,5 +89,11 @@ export default {
 
 .items-top .item-top {
     padding: 5px 0;
+}
+
+.items-top .title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 </style>

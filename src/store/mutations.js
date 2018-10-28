@@ -27,10 +27,10 @@ export default {
     state.cityData = [];
     //debugger;
     items.forEach((item, i) => {
-      if (item && i < 15) {
+      //if (item && i < 15) {
         state.cityData.push(item);
         //Vue.set(state.cityData, item._id, item)
-      }
+      //}
     })
   },
 }

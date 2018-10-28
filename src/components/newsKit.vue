@@ -10,7 +10,7 @@
       <div v-if="hasData===true">
         <div class="news-item" v-for="item in newsItems" :key="item._id">
           <div class="title">
-            <a :href="getHostName()+'/item/'+item._id">
+            <a target="_blank" :href="getHostName()+'/item/'+item._id" v-bind:title="item.title">
               {{item.title}}
             </a>
           </div>
@@ -102,6 +102,12 @@ export default {
 
 .items-kit .news-item:first-child {
   border-top: none;
+}
+
+.items-kit .news-item .title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
 
